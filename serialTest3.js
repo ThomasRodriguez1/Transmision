@@ -58,12 +58,7 @@ var datos;
 
              datos = data;
 
-               // socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
-               socket.emit('llegaDeSerial', datos.toString('utf8'));
+               socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
+               //socket.emit('llegaDeSerial', datos.toString('utf8'));
             });
-
-          socket.on()
-
-
-    
 });
