@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<script src="/socket.io/socket.io.js"></script>
+<body>
+
+<h2>My First Web Page</h2>
+<p>My First Paragraph.</p>
+
+<div id="demo" ></div>
+
+
+
+</body>
+<script>
+	var enviaString;
+
+	var socket = io.connect('http://localhost:8080',{'forceNew': true});
+	socket.on('llegaDeSerial', function(data){
+		console.log(data);
+		//var datos =  data.toString('utf8');
+		
+		document.getElementById("demo").innerHTML += data.text + "<br/>";
+		
+	});
+	
+
+</script>
+	
+
+	
+	
+</html> 
