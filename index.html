@@ -17,7 +17,7 @@
 <script>
 	var enviaString;
 
-	var socket = io.connect('http://localhost:8080',{'forceNew': true});
+	var socket = io.connect('http://localhost:5500',{'forceNew': true});
 	socket.on('llegaDeSerial', function(data){
 		console.log(data);
 		//var datos =  data.toString('utf8');

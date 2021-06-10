@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
 });
 
 server.listen(8080, () => {
-  console.log('Server listening on http://localhost:8080');
+  console.log('Server listening on http://localhost:5500');
 });
 
 //Serialport

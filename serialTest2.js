@@ -14,7 +14,7 @@ var i = 1;
 var sp = new  serialport(
     'COM13',
     {
-    baudRate: 115200,
+    baudRate: 9600,
     databits: 8,
     parity: 'none',
     stopBits: 1,
