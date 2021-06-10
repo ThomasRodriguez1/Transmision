@@ -31,7 +31,7 @@ server.listen(5500, () => {
 
 
 var sp = new  serialport(
-    'COM11',
+    'COM4',
     {baudRate: 9600,
     databits: 8,
     parity: 'none',
@@ -48,9 +48,11 @@ var datos;
         console.log("Nueva Conexión por sockets");
         var connectedUsersCount = io.engine.clientsCount;
         console.log("Numero de players: " + connectedUsersCount);
+
         //oneUserLeft = connectedUsersCount - 1;
         //io.emit('connectedUsersCount', connectedUsersCount);
         //socket.on('disconnect', oneUserLeft);
+
           sp.on('data', function(data) {
              console.log('data serial received: ' + data);
 
