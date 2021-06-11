@@ -1,7 +1,7 @@
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server); 
+var io = require('socket.io')(server);
 
 
 
@@ -33,17 +33,17 @@ server.listen(5500, () => {
 var sp = new  serialport(
     'COM4',
     {baudRate: 9600,
-    databits: 8,
+    databits: 1,
     parity: 'none',
     stopBits: 1,
     flowControl: false,
     });
 //const parser = new serialport.parsers.Readline();
 //port.pipe(parser);
-    
+
 var datos;
 
-    
+
     io.on('connection', function(socket){
         console.log("Nueva Conexión por sockets");
         var connectedUsersCount = io.engine.clientsCount;
@@ -52,6 +52,7 @@ var datos;
         //oneUserLeft = connectedUsersCount - 1;
         //io.emit('connectedUsersCount', connectedUsersCount);
         //socket.on('disconnect', oneUserLeft);
+
 
           sp.on('data', function(data) {
              console.log('data serial received: ' + data);
