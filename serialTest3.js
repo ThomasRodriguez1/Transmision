@@ -1,3 +1,4 @@
+const { Console } = require('console');
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
@@ -43,8 +44,8 @@ var sp = new  serialport(
 
 var datos;
 
-    //var cont=0;
-    
+    var cont=0;
+    var total=0;
     io.on('connection', function(socket){
         console.log("Nueva Conexión por sockets");
         var connectedUsersCount = io.engine.clientsCount;
@@ -57,15 +58,19 @@ var datos;
 
           sp.on('data', function(data) {
              console.log('data serial received: ' + data);
-
              datos = data;
-              //if(cont!=3){
+             if(true){
+              if(cont!=3){
                 socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
-                //cont++;
-                
-              //}if(cont==3){
-               // cont=0;
-              //}
+                cont++;
+                total++;
+                console.log(cont);
+              }if(cont==3){
+                cont=0;
+              }
+            }
+             
+              
                //socket.emit('llegaDeSerial', datos.toString('utf8'));
             });
 });
