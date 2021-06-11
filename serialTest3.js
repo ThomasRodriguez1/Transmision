@@ -15,8 +15,8 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-server.listen(5500, () => {
-  console.log('Server listening on http://localhost:5500');
+server.listen(8080, () => {
+  console.log('Server listening on http://localhost:8080');
 });
 
 //Serialport
@@ -32,8 +32,8 @@ server.listen(5500, () => {
 
 var sp = new  serialport(
     'COM4',
-    {baudRate: 9600,
-    databits: 1,
+    {baudRate: 500000,
+    databits: 8,
     parity: 'none',
     stopBits: 1,
     flowControl: false,
@@ -43,7 +43,8 @@ var sp = new  serialport(
 
 var datos;
 
-
+    //var cont=0;
+    
     io.on('connection', function(socket){
         console.log("Nueva Conexión por sockets");
         var connectedUsersCount = io.engine.clientsCount;
@@ -58,8 +59,13 @@ var datos;
              console.log('data serial received: ' + data);
 
              datos = data;
-
-               socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
+              //if(cont!=3){
+                socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
+                //cont++;
+                
+              //}if(cont==3){
+               // cont=0;
+              //}
                //socket.emit('llegaDeSerial', datos.toString('utf8'));
             });
 });
