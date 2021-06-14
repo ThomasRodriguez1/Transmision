@@ -16,6 +16,7 @@
 </body>
 <script>
 	var enviaString;
+	var cont;
 
 	var socket = io.connect('http://localhost:8080',{'forceNew': true});
 	socket.on('llegaDeSerial', function(data){ //listen the socket

@@ -33,7 +33,7 @@ server.listen(8080, () => {
 
 var sp = new  serialport(
     'COM4',
-    {baudRate: 500000,
+    {baudRate: 2000000,
     databits: 8,
     parity: 'none',
     stopBits: 1,
@@ -43,13 +43,13 @@ var sp = new  serialport(
 //port.pipe(parser);
 
 var datos;
-
-    var cont=0;
-    var total=0;
+var longitud;
+ 
     io.on('connection', function(socket){
         console.log("Nueva Conexión por sockets");
         var connectedUsersCount = io.engine.clientsCount;
         console.log("Numero de players: " + connectedUsersCount);
+        
 
         //oneUserLeft = connectedUsersCount - 1;
         //io.emit('connectedUsersCount', connectedUsersCount);
@@ -57,20 +57,18 @@ var datos;
 
 
           sp.on('data', function(data) {
-             console.log('data serial received: ' + data);
-             datos = data;
-             if(true){
-              if(cont!=3){
-                socket.emit('llegaDeSerial', {text: datos.toString('utf8') });
-                cont++;
-                total++;
-                console.log(cont);
-              }if(cont==3){
-                cont=0;
+          console.log('data serial received: ' + data);
+            
+                datos = data;
+                longitud=datos.toString('utf8');
+
+              if((longitud.length)>2){
+                
+                //console.log(`${longitud} ${longitud.length}`);
+                socket.emit('llegaDeSerial', {text: longitud });
+        
               }
-            }
-             
-              
+
                //socket.emit('llegaDeSerial', datos.toString('utf8'));
             });
 });
