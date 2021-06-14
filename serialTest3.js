@@ -65,8 +65,8 @@ var longitud;
               if((longitud.length)>2){
                 
                 //console.log(`${longitud} ${longitud.length}`);
-                socket.emit('llegaDeSerial', {text: longitud });
-        
+                socket.emit('llegaDeSerial', longitud);
+                
               }
 
                //socket.emit('llegaDeSerial', datos.toString('utf8'));

@@ -2,7 +2,7 @@
 <html>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <body>
 
@@ -10,23 +10,57 @@
 <p>My First Paragraph.</p>
 
 <div id="demo" ></div>
-
+<div id="Grafica"></div>
+<canvas id = "miCanvas"> </canvas>
 
 
 </body>
 <script>
 	var enviaString;
-	var cont;
+	
+
+	
 
 	var socket = io.connect('http://localhost:8080',{'forceNew': true});
+	let counter =0;
 	socket.on('llegaDeSerial', function(data){ //listen the socket
+		data=data.toString('utf8');
+		//console.log(data);
+		var coseno=Math.cos(data.length);
+		document.getElementById("Grafica").innerHTML = coseno + "<br/>";
+		myChart.data.labels.push(counter);
+		myChart.data.datasets.forEach(dataset => {
 
-		console.log(data);
+			dataset.data.push(coseno);
+		});
+		counter++;
+		
+		myChart.update();
+
+
 		var datos =  data.toString('utf8');
-		document.getElementById("demo").innerHTML += data.text + "<br/>";
+		document.getElementById("demo").innerHTML = datos + "<br/>";
 
 	});
+
+	var ctx = document.getElementById('miCanvas').getContext('2d');
+		var myChart = new Chart(ctx, {
+		    type: 'line',
+		    data: {
+		        labels: ['Serial'],	
+		        datasets: [{
+		        	label: "Serial Data",
+		        	backgroundColor: "rgb(52,73,94)",
+		        	borderColor: "rgb(41,128,185)",
+		        	data: []
+		        }]
+		    },
+		    options: {
+		        
+		    }
+		});
 
 </script>
 
 </html>
+
