@@ -1,0 +1,39 @@
+body{
+  font-family: sans-serif;
+  
+}
+.col-md{
+  background-color: rgba(110, 5, 144, 1);
+  color: white;
+  text-align: center;
+}
+
+.titulos{
+text-align: center;
+font-weight: 900;
+color: white;
+margin :auto;
+width: 100%;
+height: auto;
+
+
+border: 2px solid#952F57;
+
+background-color: rgba(110, 5, 144, 1);
+opacity: 90%;
+  /* color: -webkit-linear-gradient(right, #002b44, #02161b); */
+}
+
+@media screen and (min-width:601px){
+  .titulos{
+    font-size: 100%;
+  }
+}
+@media screen and (max-width:600px){
+  .titulos{
+    font-size: 80%;
+  }
+}
+
+
+

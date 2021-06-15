@@ -1,27 +1,50 @@
 <!DOCTYPE html>
 <html>
+	
+	<head>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	</head>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="/socket.io/socket.io.js"></script>
+	<header>
 
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-</head>
+		<link rel="stylesheet" href="estilos.css">
+		<title>Go Back N ARQ</title>
+		
+		
 
-<body>
+		<div class="titulos">
+			<h3>Instituto Politecnico Nacional</h3>
+			<h4>Unidad Profesional Interdisciplinaria en Ingeniería y Tecnologías Avanzadas</h4>
+			<h5>Transmision de datos</h5>
+		</div>
+		<img src="images/Free_Sample_By_Wix_1.jfif" class="img-fluid mx-auto d-block " alt="GoBN">
+  	</header>
+	 
+	<body>
 
-<h2>My First Web Page</h2>
+			<div class="container">
+				
+				<div class="row">
+					<canvas id = "Throughput"> </canvas>
+				</div>
+				<div class="row justify-content-md-center">
+					<div class="col-md" id="Mensaje" ></div>
+					<div class="col-md" id="paquetes_recibidos"></div>
+				</div>
+				<div class="row">
+					<canvas id = "Acumulado"> </canvas>
+				</div>
+			</div>
+			
+		
+	</body>
 
-
-<div id="Mensaje" ></div>
-<div id="paquetes_recibidos"></div>
-<canvas id = "miCanvas"> </canvas>
-
-
-</body>
 <script>
 	var enviaString;
 	
@@ -30,41 +53,94 @@
 
 	var socket = io.connect('http://localhost:8080',{'forceNew': true});
 	let counter =1;
-	var paquetes=0;
+	var paquetes_exitosos=0;
+	var paquetes_fallidos=0;
 	socket.on('llegaDeSerial', function(data){ //listen the socket
 		data=data.toString('utf8');
 		//console.log(data);
 		if(data.length-2>1){ //Detecta acks=0;
-		paquetes++;}
-		
-		document.getElementById("paquetes_recibidos").innerHTML = paquetes + "<br/>";
-		myChart.data.labels.push(counter);
-		myChart.data.datasets.forEach(dataset => {
+			paquetes_exitosos++;
 
-			dataset.data.push(paquetes);
+
+		}else{
+			paquetes_fallidos++;
+			
+		}
+		var datos =  data.toString('utf8');
+		document.getElementById("Mensaje").innerHTML = "Mensaje Recibido:   "+datos + "<br/>";
+		document.getElementById("paquetes_recibidos").innerHTML = "Paquetes recibidos:   "+paquetes_exitosos + " <br/>";
+		
+		
+		myChartThroughput.data.labels.push(counter);
+		myChartThroughput.data.datasets.forEach(dataset => {
+
+			dataset.data.push(paquetes_exitosos);
+			
 		});
+		myChartThroughput.update();
+
+		
+				myChartAcumulado.data.labels.pop();
+				 myChartAcumulado.data.datasets.forEach((dataset) => {
+        			dataset.data.pop();
+    			});
+				myChartAcumulado.data.labels.pop();
+				 myChartAcumulado.data.datasets.forEach((dataset) => {
+        			dataset.data.pop();
+    			});
+
+				myChartAcumulado.update();
+
+
+				myChartAcumulado.data.labels.push("Mensajes recibidos exitosamente");
+		 				myChartAcumulado.data.datasets.forEach(dataset =>{
+		 			dataset.data.push(paquetes_exitosos);
+		 			}
+		 		);
+				 myChartAcumulado.update();
+				 myChartAcumulado.data.labels.push("Mensajes erroneos");
+			 			myChartAcumulado.data.datasets.forEach(dataset =>{
+		 			dataset.data.push(paquetes_fallidos);
+		 			}
+		 		);
+
+    				myChartAcumulado.update();
+		
+
 		counter++;
 		
-		myChart.update();
 		
-
-
-		var datos =  data.toString('utf8');
-		document.getElementById("Mensaje").innerHTML = datos + "<br/>";
-
 	});
 
-	var ctx = document.getElementById('miCanvas').getContext('2d');
-		var myChart = new Chart(ctx, {
+	var ctx1 = document.getElementById('Throughput').getContext('2d');
+		var myChartThroughput = new Chart(ctx1, {
 		    type: 'line',
 		    data: {
 		        labels: ['Serial'],	
 		        datasets: [{
-		        	label: "Serial Data",
-		        	backgroundColor: "rgb(52,73,94)",
-		        	borderColor: "rgb(41,128,185)",
+		        	label: "Throughput",
+		        	backgroundColor: "rgb(2, 254, 2,0.1)",
+		        	borderColor: "rgb(2, 254, 2)",
+					fill:true,
 		        	data: []
 		        }]
+		    },
+		    options: {
+		        
+		    }
+		});
+		var ctx2 = document.getElementById('Acumulado').getContext('2d');
+		var myChartAcumulado = new Chart(ctx2, {
+		    type: 'bar',
+		    data: {
+		        labels: [],
+		        datasets: [{
+					label: "Mensajes recibidos exitosamente",
+					backgroundColor: "rgb(85,0,255)",
+					fill:true,
+		        	data: []
+		        }
+			]
 		    },
 		    options: {
 		        
