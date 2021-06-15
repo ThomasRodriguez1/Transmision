@@ -7,7 +7,7 @@
 <body>
 
 <h2>My First Web Page</h2>
-<p>My First Paragraph.</p>
+
 
 <div id="demo" ></div>
 <div id="Grafica"></div>
@@ -22,20 +22,24 @@
 	
 
 	var socket = io.connect('http://localhost:8080',{'forceNew': true});
-	let counter =0;
+	let counter =1;
+	var paquetes=0;
 	socket.on('llegaDeSerial', function(data){ //listen the socket
 		data=data.toString('utf8');
 		//console.log(data);
-		var coseno=Math.cos(data.length);
-		document.getElementById("Grafica").innerHTML = coseno + "<br/>";
+		if(data.length-2>1){
+		paquetes++;}
+		
+		document.getElementById("Grafica").innerHTML = paquetes + "<br/>";
 		myChart.data.labels.push(counter);
 		myChart.data.datasets.forEach(dataset => {
 
-			dataset.data.push(coseno);
+			dataset.data.push(paquetes);
 		});
 		counter++;
 		
 		myChart.update();
+		
 
 
 		var datos =  data.toString('utf8');
