@@ -97,13 +97,13 @@
 
 				myChartAcumulado.data.labels.push("");
 		 				myChartAcumulado.data.datasets.forEach(dataset =>{
-		 			dataset.data.push(paquetes_exitosos);
+		 			dataset.data.push(paquetes_exitosos);   //Aumenta datos de tabla de paquetes exitosos
 		 			}
 		 		);
 				 myChartAcumulado.update();
 				 myChartAcumulado.data.labels.push("");
 			 			myChartAcumulado.data.datasets.forEach(dataset =>{
-		 			dataset.data.push(paquetes_fallidos);
+		 			dataset.data.push(paquetes_fallidos); //Aumenta datos de tabla de paquetes erroneos
 		 			}
 		 		);
 
