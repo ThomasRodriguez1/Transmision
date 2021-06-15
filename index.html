@@ -4,13 +4,20 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+</head>
+
 <body>
 
 <h2>My First Web Page</h2>
 
 
-<div id="demo" ></div>
-<div id="Grafica"></div>
+<div id="Mensaje" ></div>
+<div id="paquetes_recibidos"></div>
 <canvas id = "miCanvas"> </canvas>
 
 
@@ -27,10 +34,10 @@
 	socket.on('llegaDeSerial', function(data){ //listen the socket
 		data=data.toString('utf8');
 		//console.log(data);
-		if(data.length-2>1){
+		if(data.length-2>1){ //Detecta acks=0;
 		paquetes++;}
 		
-		document.getElementById("Grafica").innerHTML = paquetes + "<br/>";
+		document.getElementById("paquetes_recibidos").innerHTML = paquetes + "<br/>";
 		myChart.data.labels.push(counter);
 		myChart.data.datasets.forEach(dataset => {
 
@@ -43,7 +50,7 @@
 
 
 		var datos =  data.toString('utf8');
-		document.getElementById("demo").innerHTML = datos + "<br/>";
+		document.getElementById("Mensaje").innerHTML = datos + "<br/>";
 
 	});
 
