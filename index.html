@@ -39,6 +39,10 @@
 				<div class="row">
 					<canvas id = "Acumulado"> </canvas>
 				</div>
+				<div class="row justify-content-md-center">
+					<div class="col-md" id="Mensajes_recibidos_exitosamente" ></div>
+					<div class="col-md" id="Mensajes_erroneos"></div>
+				</div>
 			</div>
 			
 		
@@ -51,7 +55,7 @@
 	
 
 	var socket = io.connect('http://localhost:8080',{'forceNew': true});
-	let counter =1;
+	let counter =2;
 	var paquetes_exitosos=0;
 	var paquetes_fallidos=0;
 	socket.on('llegaDeSerial', function(data){ //listen the socket
@@ -67,13 +71,13 @@
 		}
 		var datos =  data.toString('utf8');
 		document.getElementById("Mensaje").innerHTML = "Mensaje Recibido:   "+datos + "<br/>";
-		document.getElementById("paquetes_recibidos").innerHTML = "Paquetes recibidos:   "+paquetes_exitosos + " <br/>";
+		document.getElementById("paquetes_recibidos").innerHTML = "Paquetes recibidos:   "+paquetes_exitosos + " <br/>"; //Muestra cantidad de paquetes recibidos
 		
 		
 		myChartThroughput.data.labels.push(counter);
 		myChartThroughput.data.datasets.forEach(dataset => {
 
-			dataset.data.push(paquetes_exitosos);
+			dataset.data.push(paquetes_exitosos);//Agrega valores a la primera grafica para mostrar Throughput
 			
 		});
 		myChartThroughput.update();
@@ -82,7 +86,7 @@
 				myChartAcumulado.data.labels.pop();
 				 myChartAcumulado.data.datasets.forEach((dataset) => {
         			dataset.data.pop();
-    			});
+    			});																			//Para eliminar los anteriores datos de las graficas de barras
 				myChartAcumulado.data.labels.pop();
 				 myChartAcumulado.data.datasets.forEach((dataset) => {
         			dataset.data.pop();
@@ -91,20 +95,24 @@
 				myChartAcumulado.update();
 
 
-				myChartAcumulado.data.labels.push("Mensajes recibidos exitosamente");
+				myChartAcumulado.data.labels.push("");
 		 				myChartAcumulado.data.datasets.forEach(dataset =>{
 		 			dataset.data.push(paquetes_exitosos);
 		 			}
 		 		);
 				 myChartAcumulado.update();
-				 myChartAcumulado.data.labels.push("Mensajes erroneos");
+				 myChartAcumulado.data.labels.push("");
 			 			myChartAcumulado.data.datasets.forEach(dataset =>{
 		 			dataset.data.push(paquetes_fallidos);
 		 			}
 		 		);
 
     				myChartAcumulado.update();
-		
+					 
+			document.getElementById("Mensajes_recibidos_exitosamente").innerHTML = "Mensajes recibidos exitosamente: "+paquetes_exitosos + "<br/>";
+			document.getElementById("Mensajes_erroneos").innerHTML = "Mensajes erroneos: "+paquetes_fallidos + " <br/>"; //Muestra cantidad de paquetes recibidos
+
+
 
 		counter++;
 		
@@ -115,12 +123,12 @@
 		var myChartThroughput = new Chart(ctx1, {
 		    type: 'line',
 		    data: {
-		        labels: ['Serial'],	
+		        labels: ['1'],	
 		        datasets: [{
 		        	label: "Throughput",
 		        	backgroundColor: "rgb(2, 254, 2,0.1)",
 		        	borderColor: "rgb(2, 254, 2)",
-					fill:true,
+					fill:true,		//difuminado de la grafica
 		        	data: []
 		        }]
 		    },
@@ -129,13 +137,15 @@
 		    }
 		});
 		var ctx2 = document.getElementById('Acumulado').getContext('2d');
+		
 		var myChartAcumulado = new Chart(ctx2, {
 		    type: 'bar',
 		    data: {
 		        labels: [],
 		        datasets: [{
-					label: "Mensajes recibidos exitosamente",
+					label: "Mensajes recibidos",
 					backgroundColor: "rgb(85,0,255)",
+					borderColor : "rgb(51, 0, 128)",
 					fill:true,
 		        	data: []
 		        }
@@ -145,6 +155,8 @@
 		        
 		    }
 		});
+		myChartAcumulado.width = 100;
+		myChartAcumulado.height = 100;
 
 </script>
 

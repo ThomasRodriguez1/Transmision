@@ -62,7 +62,7 @@ var longitud;
                 datos = data;
                 longitud=datos.toString('utf8');
 
-              if((longitud.length)>2){
+              if((longitud.length)>2){  //Tomar datos que no esten vacios del arduino
                 
                 //console.log(`${longitud} ${longitud.length}`);
                 socket.emit('llegaDeSerial', longitud);
