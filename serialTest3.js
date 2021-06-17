@@ -4,8 +4,6 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-
-
 var serialport = require("serialport");
 var SerialPort = serialport.SerialPort;
 
@@ -19,16 +17,6 @@ app.get('/', function (req, res) {
 server.listen(8080, () => {
   console.log('Server listening on http://localhost:8080');
 });
-
-//Serialport
-
-
-/*serialport.list(function (err, ports) {
-
-    ports.forEach(function(port) {
-    console.log(port.comName);
-    });
-});*/
 
 
 var sp = new  serialport(
@@ -50,11 +38,9 @@ var longitud;
         var connectedUsersCount = io.engine.clientsCount;
         console.log("Numero de players: " + connectedUsersCount);
         
-
         //oneUserLeft = connectedUsersCount - 1;
         //io.emit('connectedUsersCount', connectedUsersCount);
         //socket.on('disconnect', oneUserLeft);
-
 
           sp.on('data', function(data) {
           console.log('data serial received: ' + data);
@@ -62,13 +48,10 @@ var longitud;
                 datos = data;
                 longitud=datos.toString('utf8');
 
-              if((longitud.length)>2){  //Tomar datos que no esten vacios del arduino
-                
+              if((longitud.length)>2){  //Tomar datos que no esten vacios del arduino    
                 //console.log(`${longitud} ${longitud.length}`);
                 socket.emit('llegaDeSerial', longitud);
-                
               }
 
-               //socket.emit('llegaDeSerial', datos.toString('utf8'));
             });
 });
